@@ -1,7 +1,7 @@
-import { Router } from "express";
-import { createOrder, receiveWebhook } from "../controllers/payment.controller";
+const express = require("express");
+const router = express.Router();
+const { createOrder, receiveWebhook } = require('../controllers/payment.controller')
 
-const router = Router();
 
 router.post("/create-order", createOrder);
 
@@ -9,4 +9,5 @@ router.post("/webhook", receiveWebhook);
 
 router.get("/success", (req, res) => res.send("Success"));
 
-export default router;
+
+module.exports = router;

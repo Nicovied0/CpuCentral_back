@@ -1,18 +1,20 @@
-import mercadopage from "mercadopago";
-import { MERCADOPAGO_API_KEY } from "../config.js";
+const mercadopago = require("mercadopago");
+const mercadoPagoKey = require("../config/payment.config");
 
-export const createOrder = async (req, res) => {
-  mercadopage.configure({
-    access_token: MERCADOPAGO_API_KEY,
+const createOrder = async (req, res) => {
+  mercadopago.configure({
+    access_token: mercadoPagoKey,
   });
+  price = req.body;
+  console.log(req.body);
 
   try {
-    const result = await mercadopage.preferences.create({
+    const result = await mercadopago.preferences.create({
       items: [
         {
-          title: "Laptop",
-          unit_price: 500,
-          currency_id: "PEN",
+          title: "Poductos varios",
+          unit_price: price,
+          currency_id: "ARS",
           quantity: 1,
         },
       ],
@@ -33,7 +35,7 @@ export const createOrder = async (req, res) => {
   }
 };
 
-export const receiveWebhook = async (req, res) => {
+const receiveWebhook = async (req, res) => {
   try {
     const payment = req.query;
     console.log(payment);
@@ -48,3 +50,5 @@ export const receiveWebhook = async (req, res) => {
     return res.status(500).json({ message: "Something goes wrong" });
   }
 };
+
+module.exports = { createOrder, receiveWebhook };

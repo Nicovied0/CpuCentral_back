@@ -1,4 +1,5 @@
-import { config } from "dotenv";
-config();
+require("dotenv").config();
 
-export const MERCADOPAGO_API_KEY = process.env.MERCADOPAGO_API_KEY;
+const mercadoPagoKey = process.env.MERCADOPAGO_API_KEY;
+
+module.exports  = mercadoPagoKey 
