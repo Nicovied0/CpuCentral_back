@@ -1,54 +1,48 @@
 const mercadopago = require("mercadopago");
 const mercadoPagoKey = require("../config/payment.config");
+require("dotenv").config();
 
 const createOrder = async (req, res) => {
+  const { title, unit_price } = req.body;
+
   mercadopago.configure({
     access_token: mercadoPagoKey,
   });
-  price = req.body;
-  console.log(req.body);
+  
 
-  try {
-    const result = await mercadopago.preferences.create({
-      items: [
+  const preference = {
+    items: [
+      {
+        title: title,
+        quantity: 1,
+        currency_id: "ARS",
+        unit_price: unit_price,
+      },
+    ],
+    back_urls: {
+      success: "http://localhost:4200/", //falta hacer esto
+      failure: "",
+      pending: "",
+    },
+    auto_return: "approved",
+    payment_methods: {
+      excluded_payment_types: [
         {
-          title: "Poductos varios",
-          unit_price: price,
-          currency_id: "ARS",
-          quantity: 1,
+          id: "ticket",
         },
       ],
-      notification_url: "https://e720-190-237-16-208.sa.ngrok.io/webhook",
-      back_urls: {
-        success: "http://localhost:4200/succes",
-        // pending: "https://e720-190-237-16-208.sa.ngrok.io/pending",
-        // failure: "https://e720-190-237-16-208.sa.ngrok.io/failure",
-      },
-    });
+    },
+  };
 
-    console.log(result);
-
-    // res.json({ message: "Payment creted" });
-    res.json(result.body);
-  } catch (error) {
-    return res.status(500).json({ message: "Something goes wrong" });
-  }
-};
-
-const receiveWebhook = async (req, res) => {
   try {
-    const payment = req.query;
-    console.log(payment);
-    if (payment.type === "payment") {
-      const data = await mercadopage.payment.findById(payment["data.id"]);
-      console.log(data);
-    }
-
-    res.sendStatus(204);
+    //preference create
+    const response = await mercadopago.preferences.create(preference);
+    const paymentUrl = response.body;
+    res.status(200).send(paymentUrl);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something goes wrong" });
+    res.send(error);
   }
 };
 
-module.exports = { createOrder, receiveWebhook };
+module.exports = { createOrder };

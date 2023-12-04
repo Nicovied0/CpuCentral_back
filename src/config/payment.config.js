@@ -1,5 +1,5 @@
 require("dotenv").config();
 
-const mercadoPagoKey = process.env.MERCADOPAGO_API_KEY;
+const mercadoPagoKey = process.env.ACCESS_TOKEN;
 
 module.exports  = mercadoPagoKey 
