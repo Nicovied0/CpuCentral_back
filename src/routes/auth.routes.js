@@ -94,15 +94,14 @@ router.get("/profile", (req, res) => {
           return res.status(404).json({ message: "Usuario no encontrado" });
         }
 
-        // Aquí puedes obtener los datos del perfil que deseas guardar en el localStorage
         const userProfile = {
           name: user.name,
           email: user.email,
           imagen: user.imagen,
-          number: user.number,
+          phone: user.phone,
           description: user.description,
           role: user.role,
-          // Agrega cualquier otra información adicional del perfil que necesites
+        
         };
 
         // Guardar los datos del perfil en el localStorage
