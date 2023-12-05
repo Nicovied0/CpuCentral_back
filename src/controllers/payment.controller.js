@@ -20,7 +20,7 @@ const createOrder = async (req, res) => {
       },
     ],
     back_urls: {
-      success: "http://localhost:4200/", //falta hacer esto
+      success: "http://localhost:4200/",
       failure: "",
       pending: "",
     },
