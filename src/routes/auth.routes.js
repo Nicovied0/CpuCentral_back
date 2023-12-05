@@ -4,21 +4,25 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-// Ruta para el registro de usuarios
 router.post("/register", (req, res) => {
-  const { name, email, password } = req.body;
-
-  // Verificar si el email ya está registrado
+  const { name, imagen, email, phone, password, role, actived, description } =
+    req.body;
   User.findOne({ email: email })
     .then((user) => {
       if (user) {
         return res.status(400).json({ message: "El email ya está registrado" });
       }
 
-      // Crear un nuevo usuario
       const newUser = new User({
         name: name,
         email: email,
+        name,
+        imagen,
+        email,
+        phone,
+        role,
+        actived,
+        description,
         password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
       });
 
